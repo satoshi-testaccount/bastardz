@@ -51,8 +51,16 @@
     const ruffleInstance = rufflePlayer.createPlayer(ruffleConfig);
     ruffleContainer.appendChild(ruffleInstance);
 
-    // Load the SWF file through Ruffle
-    ruffleInstance.load("https://kdata1.com/2015/12/lilbastard/main.swf");
+    // Load the SWF file through Ruffle using fetch with 'no-cors' mode
+    fetch('https://kdata1.com/2015/12/lilbastard/main.swf', { mode: 'no-cors' })
+      .then(response => response.blob())
+      .then(blob => {
+        const blobUrl = URL.createObjectURL(blob);
+        ruffleInstance.load(blobUrl);
+      })
+      .catch(error => {
+        console.error('Failed to fetch or load the SWF file:', error);
+      });
   </script>
 </body>
 </html>
