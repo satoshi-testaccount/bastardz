@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>My Lil Bastard</title>
-  <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+  <script src="https://unpkg.com/@ruffle-rs/player"></script>
   <style>
     body {
       margin: 0;
@@ -23,22 +23,36 @@
       margin-top: 20px;
       font-size: 1.2rem;
     }
+    .swf-iframe {
+      display: none;
+    }
   </style>
 </head>
 <body>
   <div id="ruffle-div"></div>
   <div class="credit">Powered by Heavens Tools (@DylanMeador)</div>
+  <iframe class="swf-iframe" src="http://www.arcadecabin.com/gamesfile/my-lil-bastard.swf" width="728" height="500" scrolling="no" frameborder="0" marginheight="0" marginwidth="0" data-ruffle-polyfilled=""></iframe>
   <script>
-    const ruffle = window.RufflePlayer.newest();
-    const config = {
+    const ruffleConfig = {
       autoplay: true,
       unmuteOverlay: false,
       allowScriptAccess: "sameDomain",
       backgroundColor: "#000000",
     };
-    const ruffleObject = ruffle.createPlayer(config);
-    document.getElementById('ruffle-div').appendChild(ruffleObject);
-    ruffleObject.load("https://mlb.heavens.tools/game.swf");
+
+    const ruffleContainer = document.getElementById('ruffle-div');
+    const iframeElement = document.querySelector('.swf-iframe');
+
+    // Hide the SWF iframe
+    iframeElement.style.display = 'none';
+
+    // Create and append the Ruffle player
+    const rufflePlayer = RufflePlayer.newest();
+    const ruffleInstance = rufflePlayer.createPlayer(ruffleConfig);
+    ruffleContainer.appendChild(ruffleInstance);
+
+    // Load the SWF file through Ruffle
+    ruffleInstance.load("http://www.arcadecabin.com/gamesfile/my-lil-bastard.swf");
   </script>
 </body>
 </html>
