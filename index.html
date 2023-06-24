@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>My Lil Bastard</title>
-  <script src="https://unpkg.com/@ruffle-rs/player"></script>
+  <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
   <style>
     body {
       margin: 0;
@@ -47,7 +47,7 @@
     iframeElement.style.display = 'none';
 
     // Create and append the Ruffle player
-    const rufflePlayer = RufflePlayer.newest();
+    const rufflePlayer = window.RufflePlayer.newest();
     const ruffleInstance = rufflePlayer.createPlayer(ruffleConfig);
     ruffleContainer.appendChild(ruffleInstance);
 
