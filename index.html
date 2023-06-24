@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Lil Bastard</title>
+  <script src="https://mlb.heavens.tools/ruffle.js"></script>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #000000;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+    }
+    #ruffle-div {
+      width: 80vmin;
+      height: 80vmin;
+    }
+    .credit {
+      margin-top: 20px;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="ruffle-div"></div>
+  <div class="credit">Powered by Heavens Tools (@DylanMeador)</div>
+  <script>
+    const ruffle = window.RufflePlayer.newest();
+    const config = {
+      autoplay: true,
+      unmuteOverlay: false,
+      allowScriptAccess: "sameDomain",
+      backgroundColor: "#000000",
+    };
+    const ruffleObject = ruffle.createPlayer(config);
+    document.getElementById('ruffle-div').appendChild(ruffleObject);
+    ruffleObject.load("https://mlb.heavens.tools/game.swf");
+  </script>
+</body>
+</html>
