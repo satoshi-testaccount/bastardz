@@ -1,66 +1,60 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My Lil Bastard</title>
+  <title>KData1 SWF Viewer</title>
   <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
   <style>
-    body {
+    html, body {
+      height: 100%;
       margin: 0;
+      padding: 0;
+    }
+    #iframe-wrapper {
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      background-color: #000000;
-      color: #ffffff;
-      font-family: Arial, sans-serif;
+      height: 100%;
     }
-    #ruffle-div {
-      width: 80vmin;
-      height: 80vmin;
-    }
-    .credit {
-      margin-top: 20px;
-      font-size: 1.2rem;
-    }
-    .swf-iframe {
-      display: none;
+    #ruffle-frame {
+      width: 100%;
+      height: 100%;
     }
   </style>
 </head>
 <body>
-  <div id="ruffle-div"></div>
-  <div class="credit">Powered by Heavens Tools (@DylanMeador)</div>
-  <iframe class="swf-iframe" src="https://kdata1.com/2015/12/lilbastard/main.swf" width="728" height="500" scrolling="no" frameborder="0" marginheight="0" marginwidth="0" data-ruffle-polyfilled=""></iframe>
+  <div id="iframe-wrapper">
+    <iframe id="ruffle-frame" src="https://kdata1.com/2015/12/lilbastard/main.swf"></iframe>
+  </div>
+
   <script>
-    const ruffleConfig = {
-      autoplay: true,
-      unmuteOverlay: false,
-      allowScriptAccess: "sameDomain",
-      backgroundColor: "#000000",
-    };
+    const iframeElement = document.getElementById('ruffle-frame');
 
-    const ruffleContainer = document.getElementById('ruffle-div');
-    const iframeElement = document.querySelector('.swf-iframe');
+    // Hide scrollbar in iframe
+    iframeElement.style.overflow = 'hidden';
 
-    // Hide the SWF iframe
-    iframeElement.style.display = 'none';
+    // Adjust iframe height to maintain aspect ratio
+    window.addEventListener('resize', resizeIframe);
+    resizeIframe();
 
-    // Create and append the Ruffle player
-    const rufflePlayer = window.RufflePlayer.newest();
-    const ruffleInstance = rufflePlayer.createPlayer(ruffleConfig);
-    ruffleContainer.appendChild(ruffleInstance);
+    function resizeIframe() {
+      const iframeWrapper = document.getElementById('iframe-wrapper');
+      const aspectRatio = 4 / 3; // Modify this value according to your SWF's aspect ratio
 
-    // Load the SWF file through Ruffle using fetch with 'no-cors' mode
-    fetch('https://kdata1.com/2015/12/lilbastard/main.swf', { mode: 'no-cors' })
-      .then(response => response.blob())
-      .then(blob => {
-        const blobUrl = URL.createObjectURL(blob);
-        ruffleInstance.load(blobUrl);
-      })
-      .catch(error => {
-        console.error('Failed to fetch or load the SWF file:', error);
-      });
+      const wrapperWidth = iframeWrapper.offsetWidth;
+      const wrapperHeight = iframeWrapper.offsetHeight;
+
+      let width, height;
+      if (wrapperWidth / wrapperHeight > aspectRatio) {
+        width = wrapperHeight * aspectRatio;
+        height = wrapperHeight;
+      } else {
+        width = wrapperWidth;
+        height = wrapperWidth / aspectRatio;
+      }
+
+      iframeElement.style.width = `${width}px`;
+      iframeElement.style.height = `${height}px`;
+    }
   </script>
 </body>
 </html>
