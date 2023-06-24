@@ -8,54 +8,37 @@
       height: 100%;
       margin: 0;
       padding: 0;
-    }
-    #iframe-wrapper {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-      background-color: #000000;
+      overflow: hidden;
     }
     #ruffle-frame {
       width: 100%;
       height: 100%;
+      background-color: #000000;
     }
   </style>
 </head>
 <body>
-  <div id="iframe-wrapper">
-    <iframe id="ruffle-frame" src="https://kdata1.com/2015/12/lilbastard/main.swf" sandbox="allow-scripts allow-same-origin"></iframe>
-  </div>
+  <canvas id="ruffle-canvas"></canvas>
 
   <script>
-    const iframeElement = document.getElementById('ruffle-frame');
+    const canvasElement = document.getElementById('ruffle-canvas');
 
-    // Hide scrollbar in iframe
-    iframeElement.style.overflow = 'hidden';
-
-    // Adjust iframe height to maintain aspect ratio
-    window.addEventListener('resize', resizeIframe);
-    resizeIframe();
-
-    function resizeIframe() {
-      const iframeWrapper = document.getElementById('iframe-wrapper');
-      const aspectRatio = 4 / 3; // Modify this value according to your SWF's aspect ratio
-
-      const wrapperWidth = iframeWrapper.offsetWidth;
-      const wrapperHeight = iframeWrapper.offsetHeight;
-
-      let width, height;
-      if (wrapperWidth / wrapperHeight > aspectRatio) {
-        width = wrapperHeight * aspectRatio;
-        height = wrapperHeight;
-      } else {
-        width = wrapperWidth;
-        height = wrapperWidth / aspectRatio;
-      }
-
-      iframeElement.style.width = `${width}px`;
-      iframeElement.style.height = `${height}px`;
-    }
+    // Initialize Ruffle
+    const rufflePlayer = window.RufflePlayer.newest(canvasElement);
+    rufflePlayer.then((player) => {
+      // Load the SWF file
+      player.configuration.parameters = {
+        swfUrl: 'https://kdata1.com/2015/12/lilbastard/main.swf',
+        backgroundColor: '#000000',
+      };
+      player.configuration.autoPlay = true;
+      player.configuration.width = '100%';
+      player.configuration.height = '100%';
+      player.loader.remap('https://kdata1.com/2015/12/lilbastard/', '');
+      player.loader.load();
+    }).catch((error) => {
+      console.error('Error initializing Ruffle:', error);
+    });
   </script>
 </body>
 </html>
