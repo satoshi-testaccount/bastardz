@@ -2,7 +2,6 @@
 <html>
 <head>
   <title>KData1 SWF Viewer</title>
-  <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
   <style>
     html, body {
       height: 100%;
@@ -18,24 +17,30 @@
   </style>
 </head>
 <body>
-  <canvas id="ruffle-canvas"></canvas>
+  <div id="ruffle-frame"></div>
 
+  <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
   <script>
-    const canvasElement = document.getElementById('ruffle-canvas');
+    // Check if the current device is a mobile device
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-    // Initialize Ruffle
-    const rufflePlayer = window.RufflePlayer.newest(canvasElement);
-    rufflePlayer.then((player) => {
-      // Load the SWF file
-      player.configuration.parameters = {
-        swfUrl: 'https://kdata1.com/2015/12/lilbastard/main.swf',
-        backgroundColor: '#000000',
-      };
-      player.configuration.autoPlay = true;
-      player.configuration.width = '100%';
-      player.configuration.height = '100%';
-      player.loader.remap('https://kdata1.com/2015/12/lilbastard/', '');
-      player.loader.load();
+    // Determine the SWF URL based on the device type
+    const swfUrl = 'https://kdata1.com/2015/12/lilbastard/main.swf';
+
+    // Create the Ruffle player
+    const ruffleConfig = {
+      autoplay: true,
+      unmuteOverlay: false,
+      allowScriptAccess: "sameDomain",
+      backgroundColor: "#000000",
+    };
+
+    const ruffleContainer = document.getElementById('ruffle-frame');
+    const rufflePlayer = window.RufflePlayer.newest();
+
+    rufflePlayer.createPlayer(ruffleConfig).then((player) => {
+      ruffleContainer.appendChild(player);
+      player.load(swfUrl);
     }).catch((error) => {
       console.error('Error initializing Ruffle:', error);
     });
